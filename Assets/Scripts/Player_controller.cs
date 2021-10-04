@@ -2,81 +2,109 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_controller : MonoBehaviour
+public  class Player_controller : MonoBehaviour
 {
-    public float speed, jumpHeight;
-    float velx, vely;
-    Rigidbody2D rb;
-    public Transform groundcheck;
-    public bool isGrounded;
-    public float groundcheckRadius;
-    public LayerMask whatisGround;
-    Animator anim;
+public float speed, jumpHeight;
+public int playerNumber;
+float velx, vely;
+Rigidbody2D rb;
+public Transform groundcheck;
+public bool isGrounded;
+public float groundcheckRadius;
+public LayerMask whatisGround;
+Animator anim;
+// Global Player
+string fireKey ;
+string jumpKey ;
+string horizontalKey ;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+
+// Start is called before the first frame update
+void Start()
+{
+    rb = GetComponent<Rigidbody2D>();
+    anim = GetComponent<Animator>();
+    switch (playerNumber)
+        {
+            case 1:
+                fireKey = "FirePlayer1";
+                jumpKey="JumpP1";
+                horizontalKey="HorizontalP1";
+                break;
+            case 2:
+                fireKey = "FirePlayer2";
+                jumpKey="JumpP2";
+                horizontalKey="HorizontalP2";
+                break;
+                default:
+                fireKey = "FirePlayer1";
+                jumpKey="JumpP1";
+                horizontalKey="HorizontalP1";
+
+                break;
+
+        }
+}
+
+// Update is called once per frame
+void Update()
+{
+    isGrounded = Physics2D.OverlapCircle(groundcheck.position, groundcheckRadius, whatisGround);
+
+    if(isGrounded){
+        anim.SetBool("jump", false);
+    }
+    else{
+        anim.SetBool("jump", true);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        isGrounded = Physics2D.OverlapCircle(groundcheck.position, groundcheckRadius, whatisGround);
+    Flipcharacter();
+    attack();
 
-        if(isGrounded){
-            anim.SetBool("jump", false);
-        }
-        else{
-            anim.SetBool("jump", true);
-        }
+}
 
-        Flipcharacter();
-        attack();
+private void FixedUpdate() {
+    movimiento();
+    jump();
+}
 
+public void attack(){
+     if(Input.GetButton(fireKey)){
+        anim.SetBool("ataque", true);
+    }
+    else{
+        anim.SetBool("ataque", false);
     }
 
-    private void FixedUpdate() {
-        movimiento();
-        jump();
+}
+
+
+public void movimiento(){
+    velx = Input.GetAxisRaw(horizontalKey);
+    vely = rb.velocity.y;
+
+    rb.velocity = new Vector2(velx * speed , vely);
+
+    if(rb.velocity.x != 0){
+        anim.SetBool("run", true);
     }
-
-    public void attack(){
-        if(Input.GetButton("Fire1")){
-            anim.SetBool("ataque", true);
-        }
-        else{
-            anim.SetBool("ataque", false);
-        }
+    else{
+        anim.SetBool("run", false);
     }
+}
 
-    public void movimiento(){
-        velx = Input.GetAxisRaw("Horizontal");
-        vely = rb.velocity.y;
-
-        rb.velocity = new Vector2(velx * speed , vely);
-
-        if(rb.velocity.x != 0){
-            anim.SetBool("run", true);
-        }
-        else{
-            anim.SetBool("run", false);
-        }
+public void jump(){
+    if(Input.GetButton(jumpKey) && isGrounded){
+        rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
     }
+}
 
-    public void jump(){
-        if(Input.GetButton("Jump") && isGrounded){
-            rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
-        }
+public void Flipcharacter(){
+    if(rb.velocity.x > 0){
+        transform.localScale = new Vector3(1, 1, 1);
     }
-
-    public void Flipcharacter(){
-        if(rb.velocity.x > 0){
-            transform.localScale = new Vector3(1, 1, 1);
-        }
-        else if(rb.velocity.x < 0){
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
+    else if(rb.velocity.x < 0){
+        transform.localScale = new Vector3(-1, 1, 1);
     }
+}
 }
