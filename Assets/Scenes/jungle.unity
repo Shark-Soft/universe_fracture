@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 472333742}
   - component: {fileID: 472333741}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 581050271}
   - component: {fileID: 581050274}
   - component: {fileID: 581050273}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Foreground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1132,7 +1132,7 @@ GameObject:
   - component: {fileID: 946147842}
   - component: {fileID: 946147844}
   - component: {fileID: 946147843}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Decoration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
