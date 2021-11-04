@@ -1,9 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public  class Player_controller : MonoBehaviour
 {
+health playerHealth;
+public int damageAmount;
+public float damageTime;
+float currentDamageTime;
+
 public float speed, jumpHeight;
 public int playerNumber;
 float velx, vely;
@@ -21,7 +27,13 @@ string horizontalKey ;
 
 // Start is called before the first frame update
 void Start()
-{
+{   
+    if(playerNumber==1){
+        playerHealth = GameObject.Find("Player2").GetComponent<health>();
+    }else{
+        playerHealth = GameObject.Find("Player1").GetComponent<health>();
+    }
+    
     rb = GetComponent<Rigidbody2D>();
     anim = GetComponent<Animator>();
     switch (playerNumber)
@@ -107,4 +119,28 @@ public void Flipcharacter(){
         transform.localScale = new Vector3(-1, 1, 1);
     }
 }
+
+ public void on(Collider2D other)  {
+    print("touch");
+
+}
+ private void OnCollisionEnter2D(Collision2D other) {
+
+    if(other.gameObject.tag == "Player" ){
+        currentDamageTime+=Time.deltaTime;
+       
+        if(currentDamageTime >damageTime && anim.GetBool("ataque")){
+            playerHealth.percent+=damageAmount;
+            currentDamageTime=0.0f;
+        }
+
+
+    }else{
+             Debug.Log("touch "+ other.gameObject.name);
+    if(other.gameObject.name =="portal"){
+        SceneManager.LoadScene("jungle");
+    }
+
+    }
+ }
 }
