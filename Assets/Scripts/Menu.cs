@@ -18,7 +18,7 @@ public class Menu : MonoBehaviour
     }
 
     public void EscenaJuego(){
-        SceneManager.LoadScene("death_field");
+        SceneManager.LoadScene("jungle");
     }
 
     public void Salir(){
