@@ -24,6 +24,8 @@ string fireKey ;
 string jumpKey ;
 string horizontalKey ;
 
+public float minx;
+public float maxx;
 
 // Start is called before the first frame update
 void Start()
@@ -95,7 +97,10 @@ public void movimiento(){
     velx = Input.GetAxisRaw(horizontalKey);
     vely = rb.velocity.y;
 
+
     rb.velocity = new Vector2(velx * speed , vely);
+
+    transform.position = new Vector3(Mathf.Clamp(transform.position.x,minx,maxx) , transform.position.y, transform.position.z);
 
     if(rb.velocity.x != 0){
         anim.SetBool("run", true);
