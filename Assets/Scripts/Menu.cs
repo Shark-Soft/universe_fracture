@@ -24,4 +24,8 @@ public class Menu : MonoBehaviour
     public void Salir(){
         Application.Quit();
     }
+
+    public void MP(){
+        SceneManager.LoadScene("Menu");
+    }
 }

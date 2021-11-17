@@ -26,6 +26,8 @@ string horizontalKey ;
 public float minx;
 public float maxx;
 
+private AudioSource sataque;
+
 // Start is called before the first frame update
 void Start()
 {   
@@ -59,6 +61,8 @@ void Start()
                 break;
 
         }
+
+        sataque = GetComponent<AudioSource>();
 }
 
 // Update is called once per frame
@@ -92,6 +96,7 @@ private void FixedUpdate() {
 public void attack(){
      if(Input.GetButton(fireKey)){
         anim.SetBool("ataque", true);
+        sataque.Play();
     }
     else{
         anim.SetBool("ataque", false);
