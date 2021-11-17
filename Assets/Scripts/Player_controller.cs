@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public  class Player_controller : MonoBehaviour
-{
-health playerHealth;
+{   health playerHealth;
 public int damageAmount;
 public float damageTime;
 float currentDamageTime;
@@ -30,6 +29,8 @@ public float maxx;
 // Start is called before the first frame update
 void Start()
 {   
+     Debug.Log("Awake:" + SceneManager.GetActiveScene().name);
+
     if(playerNumber==1){
         playerHealth = GameObject.Find("Player2").GetComponent<health>();
     }else{
@@ -64,6 +65,12 @@ void Start()
 void Update()
 {
     isGrounded = Physics2D.OverlapCircle(groundcheck.position, groundcheckRadius, whatisGround);
+    if(SceneManager.GetActiveScene().name != "GameOver")
+    if(playerHealth.percent <= 0){
+        GameObject.DontDestroyOnLoad(this.gameObject);
+        FindObjectOfType<GameManager>().GameOver();
+
+    }
 
     if(isGrounded){
         anim.SetBool("jump", false);
@@ -129,7 +136,7 @@ public void Flipcharacter(){
     print("touch");
 
 }
- private void OnCollisionEnter2D(Collision2D other) {
+ private void OnCollisionStay2D(Collision2D other) {
 
     if(other.gameObject.tag == "Player" ){
         currentDamageTime+=Time.deltaTime;
@@ -143,7 +150,6 @@ public void Flipcharacter(){
     }else{
              Debug.Log("touch "+ other.gameObject.name);
     if(other.gameObject.name =="portal"){
-        SceneManager.LoadScene("jungle");
     }
 
     }
