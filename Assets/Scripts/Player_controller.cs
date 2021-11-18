@@ -25,12 +25,18 @@ string horizontalKey ;
 
 public float minx;
 public float maxx;
+        AnimationClip clip;
 
 private AudioSource sataque;
 
+    AnimationEvent evt;
 // Start is called before the first frame update
 void Start()
 {   
+    evt = new AnimationEvent();
+    evt.time = 0.45f;
+    evt.functionName = "AtackOff";
+
      Debug.Log("Awake:" + SceneManager.GetActiveScene().name);
 
     if(playerNumber==1){
@@ -65,6 +71,7 @@ void Start()
         sataque = GetComponent<AudioSource>();
 }
 
+
 // Update is called once per frame
 void Update()
 {
@@ -84,12 +91,12 @@ void Update()
     }
 
     Flipcharacter();
-    attack();
 
 }
 
 private void FixedUpdate() {
     movimiento();
+    attack();
     jump();
 }
 
@@ -97,11 +104,21 @@ public void attack(){
      if(Input.GetButton(fireKey)){
         anim.SetBool("ataque", true);
         sataque.Play();
-    }
-    else{
-        anim.SetBool("ataque", false);
-    }
+        clip = anim.GetCurrentAnimatorClipInfo(0)[0].clip;
 
+        clip.AddEvent(evt);
+    }
+    // else{
+    //     // if(anim.getBool("ataque")){
+    //         if(!anim.GetCurrentAnimatorStateInfo(0).IsName("atacar") ){
+
+    //         }
+    //     // }
+    // }
+
+}
+public void AtackOff(){
+        anim.SetBool("ataque", false);
 }
 
 
